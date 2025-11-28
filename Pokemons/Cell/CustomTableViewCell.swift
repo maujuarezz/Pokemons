@@ -11,7 +11,7 @@ class CustomTableViewCell: UITableViewCell {
     
     lazy var containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemGreen
+        view.backgroundColor = .white
         view.layer.cornerRadius = 8
         view.elevate()
         view.translatesAutoresizingMaskIntoConstraints = false

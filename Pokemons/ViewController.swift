@@ -8,6 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController, ViewGeneral {
+        
     /*var dataSource: [Model] = [
         Model(id: 1, title: "Title 1", subtitle: "Subtitle 1"),
         Model(id: 2, title: "El principito", subtitle: "Subtitle 2"),
@@ -28,14 +29,14 @@ class ViewController: UIViewController, ViewGeneral {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupView()
-        addSubViews()
+        addSubviews()
         setupConstraints()
         fetchPokemons()
     }
     func setupView() {
         view.backgroundColor = .cyan
     }
-    func addSubViews() {
+    func addSubviews() {
         view.addSubview(tableView)
     }
     func setupConstraints() {
@@ -75,8 +76,12 @@ class ViewController: UIViewController, ViewGeneral {
         }.resume()
     }
     func successPokemon(response: PokemonResponse) {
+        let  detailViewController =  DetailViewController()
+        
         dataSource = response.results
         tableView.reloadData()
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+        //self.navigationController?.popViewController(animated: true)
     }
     
 }
@@ -97,11 +102,5 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         cell.setupCell(title: data.name, subtitle: data.url)
         return cell
     }
-}
-
-protocol ViewGeneral {
-    func setupView()
-    func addSubViews()
-    func setupConstraints()
 }
 
