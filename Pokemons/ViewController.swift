@@ -76,17 +76,13 @@ class ViewController: UIViewController, ViewGeneral {
         }.resume()
     }
     func successPokemon(response: PokemonResponse) {
-        let  detailViewController =  DetailViewController()
-        
         dataSource = response.results
         tableView.reloadData()
-        self.navigationController?.pushViewController(detailViewController, animated: true)
-        //self.navigationController?.popViewController(animated: true)
     }
     
 }
 
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
+extension ViewController: UITableViewDataSource, UITableViewDelegate, CustomCellDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
     }
@@ -97,10 +93,19 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
 
         }
-        
+        cell.delegate = self
         let data = dataSource[indexPath.row]
         cell.setupCell(title: data.name, subtitle: data.url)
+        cell.tag = indexPath.row
         return cell
+    }
+    
+    func labelTapped(in cell: CustomTableViewCell) {
+
+        let  detailViewController =  DetailViewController()
+        detailViewController.url = dataSource[cell.tag].url
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+        //self.navigationController?.popViewController(animated: true)
     }
 }
 

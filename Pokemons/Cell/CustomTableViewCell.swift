@@ -8,6 +8,8 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
     static let identifier = "CustomTableViewCell"
+    weak var delegate: CustomCellDelegate?
+
     
     lazy var containerView: UIView = {
         let view = UIView()
@@ -31,6 +33,19 @@ class CustomTableViewCell: UITableViewCell {
         label.textColor = .black
         label.font = .systemFont(ofSize: 14, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        //agregar evento labelTapped
+        label.isUserInteractionEnabled = true
+
+        // 2. Crear el reconocedor de gestos
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTappedAction))
+
+        // 3. Especificar el número de toques
+        tapGesture.numberOfTapsRequired = 1
+
+        // 4. Agregar el reconocedor de gestos a la etiqueta
+        label.addGestureRecognizer(tapGesture)
+
         return label
     }()
     
@@ -72,8 +87,6 @@ class CustomTableViewCell: UITableViewCell {
             
             subtitleLabel.topAnchor.constraint(equalTo:
                 titleLabel.bottomAnchor,constant: 8),
-            subtitleLabel.leadingAnchor.constraint(equalTo:
-                containerView.leadingAnchor, constant: 16),
             subtitleLabel.trailingAnchor.constraint(equalTo:
                 containerView.trailingAnchor, constant: -16),
             subtitleLabel.bottomAnchor.constraint(equalTo:
@@ -82,7 +95,11 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     func setupCell(title: String, subtitle: String) {
-        self.titleLabel.text = title
-        self.subtitleLabel.text = subtitle
+        self.titleLabel.text = title.capitalized
+        self.subtitleLabel.text = "Ver detalle"
+    }
+    
+    @objc func labelTappedAction(_ sender: UIButton) {
+        delegate?.labelTapped(in: self)
     }
 }

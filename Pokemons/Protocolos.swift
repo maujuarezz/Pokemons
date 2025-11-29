@@ -9,3 +9,7 @@ protocol ViewGeneral {
     func addSubviews()
     func setupConstraints()
 }
+
+protocol CustomCellDelegate: AnyObject {
+    func labelTapped(in cell: CustomTableViewCell)
+}
