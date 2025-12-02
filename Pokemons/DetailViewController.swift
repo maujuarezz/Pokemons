@@ -9,10 +9,19 @@ import UIKit
 
 class DetailViewController: UIViewController {
     var url: String?
-    var player: AVPlayer?
+    //var player: AVPlayer?
 
 
     lazy var pokemonImage: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+
+        return imageView
+    }()
+    
+    lazy var pokemonImageAnimated: UIImageView = {
         let imageView = UIImageView()
         
         imageView.contentMode = .scaleAspectFit
@@ -80,8 +89,9 @@ class DetailViewController: UIViewController {
         view.addSubview(typePokemonLabel)
         view.addSubview(alturaPokemonLabel)
         view.addSubview(pesoPokemonLabel)
-        view.addSubview(pokemonImage)
         view.addSubview(habilidadesPokemonLabel)
+        view.addSubview(pokemonImage)
+        view.addSubview(pokemonImageAnimated)
     }
     
     func setupConstraints () {
@@ -91,7 +101,7 @@ class DetailViewController: UIViewController {
             namePokemonLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             //constraints label tipo de pokemon
-            typePokemonLabel.topAnchor.constraint(equalTo: namePokemonLabel.topAnchor, constant: 50),
+            typePokemonLabel.topAnchor.constraint(equalTo: namePokemonLabel.bottomAnchor, constant: 15),
             typePokemonLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
             
             //constraints label habilidades de pokemon
@@ -106,10 +116,14 @@ class DetailViewController: UIViewController {
             pesoPokemonLabel.topAnchor.constraint(equalTo: alturaPokemonLabel.topAnchor, constant: 15),
             pesoPokemonLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
             
+            //constraints imageAnimated Pokemon
+            pokemonImageAnimated.topAnchor.constraint(equalTo: pesoPokemonLabel.bottomAnchor, constant: 50),
+            pokemonImageAnimated.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
+            
             //constraints imagen pokemon
-            pokemonImage.topAnchor.constraint(equalTo: pesoPokemonLabel.topAnchor, constant: 15),
+            pokemonImage.topAnchor.constraint(equalTo: pokemonImageAnimated.topAnchor, constant: -80),
             pokemonImage.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
-            pokemonImage.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15),
+            pokemonImage.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15)
 
         ])
     }
@@ -195,7 +209,7 @@ class DetailViewController: UIViewController {
         
         //descarga imagen de celda seleccionada
         pokemonImage.loadImage(url: response.sprites.other.home.front_default)
-        //pokemonImage.image = UIImage.animatedGif(url: response.sprites.versions.generationv.blackwhite.animated.front_default)
+        pokemonImageAnimated.image = UIImage.gifImageWithData(url: response.sprites.versions.generationv.blackwhite.animated.front_default)
         //pokemonImage.image = UIImage.gifImageWithData(url: response.sprites.versions.generationv.blackwhite.animated.front_default)
         
         
@@ -213,7 +227,7 @@ class DetailViewController: UIViewController {
         return textoNegrita
     }
     
-    func playOggFromURL(urlString: String) {
+    /*func playOggFromURL(urlString: String) {
         
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
@@ -228,7 +242,7 @@ class DetailViewController: UIViewController {
 
         // Play the audio
         player?.play()
-    }
+    }*/
 }
 
 extension Int {
